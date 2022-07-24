@@ -12,7 +12,7 @@ APP = typer.Typer()
 @APP.command()
 def cli():
     """
-    Main cli entrypoint.
+    Run API with uvicorn.
     """
     uvicorn.run("gotta_scrape_em_all.main:FASTAPI_APP", port=5000, log_level="info")
 
