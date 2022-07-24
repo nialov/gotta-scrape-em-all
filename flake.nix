@@ -24,8 +24,9 @@
               # other python packages you want
             ]);
         in pkgs.mkShell {
-          buildInputs = [
+          buildInputs = with pkgs; [
             python-with-my-packages
+            pre-commit
             # other dependencies
           ];
           envrc_contents = ''

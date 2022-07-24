@@ -3,8 +3,8 @@ Main API entrypoint.
 """
 
 
-from fastapi import FastAPI, Request
 import requests
+from fastapi import FastAPI, Request
 
 FASTAPI_APP = FastAPI()
 
