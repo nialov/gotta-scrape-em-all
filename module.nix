@@ -26,7 +26,7 @@ in with lib;
       };
       port = mkOption {
         default = "5000";
-        type = with types; number;
+        type = with types; int;
         description = ''
           Port to bind to.
         '';
