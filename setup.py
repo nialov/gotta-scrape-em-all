@@ -157,7 +157,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         "console_scripts": [
-            "gotta-scrape-em-all=gotta_scrape_em_all.cli:APP",
+            "gotta-scrape-em-all=gotta_scrape_em_all.cli:main",
         ],
     },
     # List additional URLs that are relevant to your project as a dict.

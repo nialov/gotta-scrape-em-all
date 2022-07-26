@@ -24,6 +24,20 @@ in with lib;
           Name of the user.
         '';
       };
+      port = mkOption {
+        default = "5000";
+        type = with types; number;
+        description = ''
+          Port to bind to.
+        '';
+      };
+      host = mkOption {
+        default = "127.0.0.1";
+        type = with types; string;
+        description = ''
+          Host to bind to.
+        '';
+      };
     };
   };
   config = mkIf cfg.enable {
@@ -40,7 +54,12 @@ in with lib;
       serviceConfig = {
         Type = "simple";
         User = "${cfg.user}";
-        ExecStart = "${gotta-scrape-em-all}/bin/gotta-scrape-em-all";
+        ExecStart = let inherit (cfg) host port;
+        in ''
+          ${gotta-scrape-em-all}/bin/gotta-scrape-em-all \
+            --port ${port} \
+            --host ${host}
+        '';
       };
     };
   };
