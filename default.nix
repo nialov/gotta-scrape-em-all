@@ -9,7 +9,7 @@ let
     runtimeInputs = [ appPython ];
 
     text = ''
-      uvicorn gotta_scrape_em_all.main:FASTAPI_APP "$@"
+      uvicorn main:FASTAPI_APP "$@"
     '';
   };
 
@@ -22,7 +22,7 @@ in stdenv.mkDerivation {
     mkdir -p $out/bin
     cp ${entrypoint}/bin/entrypoint $out/bin/${name}
     chmod +x $out/bin/${name}
-    cp -r ${./gotta_scrape_em_all} $out/gotta_scrape_em_all
+    cp ${./main.py} $out/main.py
   '';
   postFixup = ''
     wrapProgram $out/bin/${name} --prefix PYTHONPATH : $out
