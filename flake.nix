@@ -8,24 +8,28 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
+        appPython = pkgs.python3.withPackages
+          (pythonPackages: with pythonPackages; [ fastapi uvicorn requests ]);
         gotta-scrape-em-all = import ./default.nix {
-          inherit (pkgs) stdenv lib;
-          inherit (pkgs.python3.pkgs) buildPythonPackage fastapi uvicorn typer;
+          inherit (pkgs)
+            stdenv lib writeShellApplication makeWrapper installShellFiles;
+          # inherit (pkgs.python3.pkgs) fastapi uvicorn typer requests;
+          inherit appPython;
         };
       in {
         packages = { inherit gotta-scrape-em-all; };
         packages.default = gotta-scrape-em-all;
         devShells.default = let
-          my-python = pkgs.python3;
-          python-with-my-packages = my-python.withPackages (p:
-            with p;
-            [
-              gotta-scrape-em-all
-              # other python packages you want
-            ]);
+          # my-python = pkgs.python3;
+          # python-with-my-packages = my-python.withPackages (p:
+          # with p;
+          # [
+          # gotta-scrape-em-all
+          # # other python packages you want
+          # ]);
         in pkgs.mkShell {
           buildInputs = with pkgs; [
-            python-with-my-packages
+            appPython
             pre-commit
             # other dependencies
           ];
@@ -33,13 +37,18 @@
             use flake
           '';
           shellHook = ''
-            PYTHONPATH=${python-with-my-packages}/${python-with-my-packages.sitePackages}
             # maybe set more env-vars
             [[ ! -a .envrc ]] && echo -n "$envrc_contents" > .envrc
           '';
         };
         nixosModules = {
           gotta-scrape-em-all-module = import ./module.nix self;
+        };
+        checks = {
+          test_cli = pkgs.runCommand "test_cli" { } ''
+            ${gotta-scrape-em-all}/bin/gotta-scrape-em-all --help
+            mkdir $out
+          '';
         };
       });
 }

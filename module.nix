@@ -19,7 +19,7 @@ in with lib;
       };
       user = mkOption {
         default = name;
-        type = with types; uniq string;
+        type = with types; uniq str;
         description = ''
           Name of the user.
         '';
