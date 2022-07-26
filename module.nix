@@ -25,7 +25,7 @@ in with lib;
         '';
       };
       port = mkOption {
-        default = "5000";
+        default = 5000;
         type = with types; int;
         description = ''
           Port to bind to.
@@ -57,7 +57,7 @@ in with lib;
         ExecStart = let inherit (cfg) host port;
         in ''
           ${gotta-scrape-em-all}/bin/gotta-scrape-em-all \
-            --port ${port} \
+            --port ${toString port} \
             --host ${host}
         '';
       };
