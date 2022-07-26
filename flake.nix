@@ -19,18 +19,11 @@
       in {
         packages = { inherit gotta-scrape-em-all; };
         packages.default = gotta-scrape-em-all;
-        devShells.default = let
-          # my-python = pkgs.python3;
-          # python-with-my-packages = my-python.withPackages (p:
-          # with p;
-          # [
-          # gotta-scrape-em-all
-          # # other python packages you want
-          # ]);
-        in pkgs.mkShell {
+        devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             appPython
             pre-commit
+            gotta-scrape-em-all
             # other dependencies
           ];
           envrc_contents = ''
